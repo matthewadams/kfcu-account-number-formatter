@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KFCU Account Number Formatter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }.input-group {
+             display: inline-block;
+             margin-right: 10px;
+         }.input-group label {
+              display: inline-block;
+              margin-right: 5px;
+          }.input-group input[type="text"] {
+               padding: 5px;
+               margin-right: 5px;
+               border: 1px solid #ccc;
+               display: inline-block;
+           }.input-group span {
+                margin: 0 5px;
+            }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        #copyButton {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 20px;
+        }
+        #result {
+            font-family: monospace;
+            padding: 5px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body onload="initialize()">
+
+<h1>KFCU Account Number Formatter</h1>
+
+<div class="input-group">
+    <label for="acct">Account:</label>
+    <input type="text" id="acct" name="acct" value="12345" onblur="calculateResult()" onfocus="selectAll(this)" oninput="enforceInputLimits(this, 10)" maxlength="10" autofocus>
+    <span>-</span>
+    <input type="text" id="share" name="share" value="0090" onblur="calculateResult()" onfocus="selectAll(this)" oninput="enforceInputLimits(this, 4)" maxlength="4">
+</div>
+
+<button onclick="convert()">Format</button>
+
+<label for="result">Result:</label>
+<input type="text" id="result" name="result" readonly onfocus="selectResult()">
+
+<button id="copyButton" onclick="copyToClipboard()">
+    &#x1F4CB; </button>
+
+<script>
+    function formatAccountNumber(acct, share) {
+        acct = Number((acct || "").trim() || 0);
+        share = Number((share || "").trim() || 0);
+
+        if (isNaN(acct) || isNaN(share)) {
+            return "Invalid input. acct and share must be numeric or contain only whitespace.";
+        }
+
+        acct = String(acct).padStart(10, '0');
+        share = String(share).padStart(4, '0');
+
+        return share + acct;
+    }
+
+    function calculateResult(selectResult = false) {
+        const acctValue = document.getElementById("acct").value;
+        const shareValue = document.getElementById("share").value;
+        const result = formatAccountNumber(acctValue, shareValue);
+        const resultField = document.getElementById("result");
+        resultField.value = result;
+        if(selectResult) { resultField.select(); }
+    }
+
+    function convert() {
+        calculateResult(true);
+    }
+
+    function copyToClipboard() {
+        const resultValue = document.getElementById("result").value;
+        navigator.clipboard.writeText(resultValue).then(() => {
+            const copyButton = document.getElementById("copyButton");
+            copyButton.textContent = "\u2713";
+            setTimeout(() => {
+                copyButton.textContent = "\u1F4CB";
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            alert("Failed to copy. Please try again.");
+        });
+    }
+
+    function initialize() {
+        const acctInput = document.getElementById("acct");
+        acctInput.focus();
+        selectAll(acctInput);
+        calculateResult();
+    }
+
+    // Add event listener for Enter key press
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            convert();
+            event.preventDefault();
+        }
+    });
+
+    function selectResult() {
+        const resultField = document.getElementById("result");
+        resultField.select();
+    }
+
+    function selectAll(inputElement) {
+        inputElement.select();
+    }
+
+    function enforceInputLimits(inputElement, maxLength) {
+        let inputValue = inputElement.value;
+        let sanitizedValue = inputValue.replace(/[^0-9]/g, '');
+
+        if (sanitizedValue.length > maxLength) {
+            sanitizedValue = sanitizedValue.slice(0, maxLength);
+        }
+
+        inputElement.value = sanitizedValue;
+    }
+
+</script>
+
+</body>
+</html>
