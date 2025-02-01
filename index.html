@@ -5,19 +5,28 @@
     <style>
         body {
             font-family: sans-serif;
-        }.input-group {
-             display: inline-block;
-             margin-right: 10px;
-             margin-bottom: 10px; /* Space between input groups */
-         }.input-group label {
-              margin-right: 5px;
-          }.input-group input[type="text"] {
-               padding: 5px;
-               border: 1px solid #ccc;
-               display: inline-block;
-           }.input-group span {
-                margin: 0 5px;
-            }
+        }
+
+        .input-group {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px; /* Space between input groups */
+        }
+
+        .input-group label {
+            margin-right: 5px;
+        }
+
+        .input-group input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            display: inline-block;
+        }
+
+        .input-group span {
+            margin: 0 5px;
+        }
+
         button {
             padding: 8px 15px;
             background-color: #4CAF50;
@@ -31,6 +40,7 @@
             cursor: pointer;
             margin-right: 10px;
         }
+
         #copyButton, #routingCopyButton { /* Style for both copy buttons */
             background: none;
             border: none;
@@ -38,7 +48,8 @@
             cursor: pointer;
             font-size: 20px;
         }
-        #result, #routingNumber {  /* Style for both readonly inputs */
+
+        #result, #routingNumber { /* Style for both readonly inputs */
             font-family: monospace;
             padding: 5px;
             border: 1px solid #ccc;
@@ -54,15 +65,18 @@
     <label for="routingNumber">Routing Number:</label>
     <input type="text" id="routingNumber" name="routingNumber" value="265577585" readonly onfocus="selectResult(this)">
     <button id="routingCopyButton" onclick="copyToClipboard('routingNumber')">
-        &#x1F4CB; </button>
+        &#x1F4CB;
+    </button>
 </div>
-<p />
+<p/>
 
 <div class="input-group">
     <label for="acct">Account:</label>
-    <input type="text" id="acct" name="acct" value="12345" onblur="calculateResult()" onfocus="selectAll(this)" oninput="enforceInputLimits(this, 10)" maxlength="10" autofocus>
+    <input type="text" id="acct" name="acct" value="12345" onblur="calculateResult()" onfocus="selectAll(this)"
+           oninput="enforceInputLimits(this, 10)" maxlength="10" autofocus>
     <span>-</span>
-    <input type="text" id="share" name="share" value="0090" onblur="calculateResult()" onfocus="selectAll(this)" oninput="enforceInputLimits(this, 4)" maxlength="4">
+    <input type="text" id="share" name="share" value="0090" onblur="calculateResult()" onfocus="selectAll(this)"
+           oninput="enforceInputLimits(this, 4)" maxlength="4">
 </div>
 
 <button onclick="convert()">Format</button>
@@ -71,10 +85,14 @@
     <label for="result">Result:</label>
     <input type="text" id="result" name="result" readonly onfocus="selectResult(this)">
     <button id="copyButton" onclick="copyToClipboard('result')">
-        &#x1F4CB; </button>
+        &#x1F4CB;
+    </button>
 </div>
 
-
+<div style="font-size: smaller;">Note: no information leaves this page or your browser. <a
+        href="https://github.com/matthewadams/kfcu-account-number-formatter/raw/refs/heads/main/index.html">Here's the
+    source</a> if you want to see for yourself, or use your browser's "View Page Source" capability.
+</div>
 
 <script>
     function formatAccountNumber(acct, share) {
@@ -97,7 +115,9 @@
         const result = formatAccountNumber(acctValue, shareValue);
         const resultField = document.getElementById("result");
         resultField.value = result;
-        if(selectResult) { resultField.select(); }
+        if (selectResult) {
+            resultField.select();
+        }
     }
 
     function convert() {
@@ -107,7 +127,7 @@
     function copyToClipboard(elementId) { // Modified to take element ID
         const resultValue = document.getElementById(elementId).value;
         navigator.clipboard.writeText(resultValue).then(() => {
-            const copyButton = document.getElementById(elementId === 'result'? 'copyButton': 'routingCopyButton');
+            const copyButton = document.getElementById(elementId === 'result' ? 'copyButton' : 'routingCopyButton');
             copyButton.textContent = "\u2713";
             setTimeout(() => {
                 copyButton.textContent = "\u1F4CB";
@@ -126,7 +146,7 @@
     }
 
     // Add event listener for Enter key press
-    document.addEventListener("keydown", function(event) {
+    document.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             convert();
             event.preventDefault();
