@@ -3,14 +3,36 @@
 <head>
     <title>KFCU Account Number Formatter</title>
     <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --input-border: #ccc;
+            --input-bg: #f0f0f0;
+            --button-bg: #4CAF50;
+            --button-text: white;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #ffffff;
+                --input-border: #404040;
+                --input-bg: #2d2d2d;
+                --button-bg: #4CAF50;
+                --button-text: white;
+            }
+        }
+
         body {
             font-family: sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
         .input-group {
             display: inline-block;
             margin-right: 10px;
-            margin-bottom: 10px; /* Space between input groups */
+            margin-bottom: 10px;
         }
 
         .input-group label {
@@ -19,8 +41,10 @@
 
         .input-group input[type="text"] {
             padding: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--input-border);
             display: inline-block;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
         .input-group span {
@@ -29,9 +53,9 @@
 
         button {
             padding: 8px 15px;
-            background-color: #4CAF50;
+            background-color: var(--button-bg);
             border: none;
-            color: white;
+            color: var(--button-text);
             text-align: center;
             text-decoration: none;
             display: inline-block;
@@ -41,19 +65,25 @@
             margin-right: 10px;
         }
 
-        #copyButton, #routingCopyButton { /* Style for both copy buttons */
+        #copyButton, #routingCopyButton {
             background: none;
             border: none;
             padding: 0;
             cursor: pointer;
             font-size: 20px;
+            color: var(--text-color);
         }
 
-        #result, #routingNumber { /* Style for both readonly inputs */
+        #result, #routingNumber {
             font-family: monospace;
             padding: 5px;
-            border: 1px solid #ccc;
-            background-color: #f0f0f0;
+            border: 1px solid var(--input-border);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        a {
+            color: var(--text-color);
         }
     </style>
 </head>
@@ -124,7 +154,7 @@
         calculateResult(true);
     }
 
-    function copyToClipboard(elementId) { // Modified to take element ID
+    function copyToClipboard(elementId) {
         const resultValue = document.getElementById(elementId).value;
         navigator.clipboard.writeText(resultValue).then(() => {
             const copyButton = document.getElementById(elementId === 'result' ? 'copyButton' : 'routingCopyButton');
@@ -145,7 +175,6 @@
         calculateResult();
     }
 
-    // Add event listener for Enter key press
     document.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             convert();
@@ -153,7 +182,7 @@
         }
     });
 
-    function selectResult(inputElement) {  // Modified to take inputElement
+    function selectResult(inputElement) {
         inputElement.select();
     }
 
@@ -171,7 +200,6 @@
 
         inputElement.value = sanitizedValue;
     }
-
 </script>
 
 </body>
