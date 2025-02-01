@@ -8,12 +8,11 @@
         }.input-group {
              display: inline-block;
              margin-right: 10px;
+             margin-bottom: 10px; /* Space between input groups */
          }.input-group label {
-              display: inline-block;
               margin-right: 5px;
           }.input-group input[type="text"] {
                padding: 5px;
-               margin-right: 5px;
                border: 1px solid #ccc;
                display: inline-block;
            }.input-group span {
@@ -32,28 +31,32 @@
             cursor: pointer;
             margin-right: 10px;
         }
-        #copyButton {
+        #copyButton, #routingCopyButton { /* Style for both copy buttons */
             background: none;
             border: none;
             padding: 0;
             cursor: pointer;
-            display: inline-block;
-            margin-left: 5px;
             font-size: 20px;
         }
-        #result {
+        #result, #routingNumber {  /* Style for both readonly inputs */
             font-family: monospace;
             padding: 5px;
             border: 1px solid #ccc;
             background-color: #f0f0f0;
-            display: inline-block;
-            margin-right: 10px;
         }
     </style>
 </head>
 <body onload="initialize()">
 
 <h1>KFCU Account Number Formatter</h1>
+
+<div class="input-group">
+    <label for="routingNumber">Routing Number:</label>
+    <input type="text" id="routingNumber" name="routingNumber" value="265577585" readonly onfocus="selectResult(this)">
+    <button id="routingCopyButton" onclick="copyToClipboard('routingNumber')">
+        &#x1F4CB; </button>
+</div>
+<p />
 
 <div class="input-group">
     <label for="acct">Account:</label>
@@ -64,11 +67,14 @@
 
 <button onclick="convert()">Format</button>
 
-<label for="result">Result:</label>
-<input type="text" id="result" name="result" readonly onfocus="selectResult()">
+<div class="input-group">
+    <label for="result">Result:</label>
+    <input type="text" id="result" name="result" readonly onfocus="selectResult(this)">
+    <button id="copyButton" onclick="copyToClipboard('result')">
+        &#x1F4CB; </button>
+</div>
 
-<button id="copyButton" onclick="copyToClipboard()">
-    &#x1F4CB; </button>
+
 
 <script>
     function formatAccountNumber(acct, share) {
@@ -98,10 +104,10 @@
         calculateResult(true);
     }
 
-    function copyToClipboard() {
-        const resultValue = document.getElementById("result").value;
+    function copyToClipboard(elementId) { // Modified to take element ID
+        const resultValue = document.getElementById(elementId).value;
         navigator.clipboard.writeText(resultValue).then(() => {
-            const copyButton = document.getElementById("copyButton");
+            const copyButton = document.getElementById(elementId === 'result'? 'copyButton': 'routingCopyButton');
             copyButton.textContent = "\u2713";
             setTimeout(() => {
                 copyButton.textContent = "\u1F4CB";
@@ -127,9 +133,8 @@
         }
     });
 
-    function selectResult() {
-        const resultField = document.getElementById("result");
-        resultField.select();
+    function selectResult(inputElement) {  // Modified to take inputElement
+        inputElement.select();
     }
 
     function selectAll(inputElement) {
