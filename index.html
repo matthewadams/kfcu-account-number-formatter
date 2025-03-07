@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>KFCU Account Number Formatter</title>
+    <title>KFCU Account Number ACH/Direct Deposit Formatter</title>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -92,7 +92,7 @@
 <h1>KFCU Account Number Formatter</h1>
 
 <div class="input-group">
-    <label for="routingNumber">Routing Number:</label>
+    <label for="routingNumber">KFCU Routing Number:</label>
     <input type="text" id="routingNumber" name="routingNumber" value="265577585" readonly onfocus="selectResult(this)">
     <button id="routingCopyButton" onclick="copyToClipboard('routingNumber')">
         &#x1F4CB;
@@ -101,7 +101,7 @@
 <p/>
 
 <div class="input-group">
-    <label for="acct">Account:</label>
+    <label for="acct">KFCU Base Account #:</label>
     <input type="text" id="acct" name="acct" value="12345678" onblur="calculateResult()" onfocus="selectAll(this)"
            oninput="enforceInputLimits(this, 10)" maxlength="10" autofocus>
     <span>-</span>
@@ -112,7 +112,7 @@
 <button onclick="convert()">Format</button>
 
 <div class="input-group">
-    <label for="result">Result:</label>
+    <label for="result">ACH Account Number:</label>
     <input type="text" id="result" name="result" readonly onfocus="selectResult(this)">
     <button id="copyButton" onclick="copyToClipboard('result')">
         &#x1F4CB;
