@@ -158,13 +158,7 @@
 
     function copyToClipboard(elementId) {
         const resultValue = document.getElementById(elementId).value;
-        navigator.clipboard.writeText(resultValue).then(() => {
-            const copyButton = document.getElementById(elementId === 'result' ? 'copyButton' : 'routingCopyButton');
-            copyButton.textContent = "\u2713";
-            setTimeout(() => {
-                copyButton.textContent = "\u1F4CB";
-            }, 2000);
-        }).catch(err => {
+        navigator.clipboard.writeText(resultValue).catch(err => {
             console.error('Failed to copy: ', err);
             alert("Failed to copy. Please try again.");
         });
